@@ -1,0 +1,28 @@
+/**
+ * The single stylesheet the app imports. It only wires things together —
+ * every actual declaration lives in `src/styles/*`, in this order:
+ *
+ *   tokens      design tokens + the light/dark colour palettes
+ *   animations  keyframes and `animate-*` utilities
+ *   base        element-level defaults
+ *   utilities   custom `@utility` helpers
+ *
+ * Order is load-bearing: later files `@apply` tokens defined by earlier ones.
+ */
+
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@import '../styles/tokens.css';
+@import '../styles/animations.css';
+@import '../styles/base.css';
+@import '../styles/utilities.css';
+
+/**
+ * Class-based dark mode, driven by `next-themes` (`attribute="class"` in
+ * ThemeProvider). This must stay class-based rather than
+ * `prefers-color-scheme` so an explicit user choice can override the OS —
+ * "system" is handled by next-themes toggling the class for us.
+ */
+@custom-variant dark (&:is(.dark *));
