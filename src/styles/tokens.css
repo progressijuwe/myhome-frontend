@@ -27,6 +27,21 @@
     --secondary: oklch(0.97 0 0);
     --secondary-foreground: oklch(0.205 0 0);
 
+    /* Myhome brand, sampled from the logo. Declared in hex at the client's
+       request rather than the oklch used elsewhere in this file — Tailwind v4
+       resolves `/20` opacity through `color-mix`, so the modifiers still work.
+       `brand` is the wordmark green, `brand-accent` the lighter node green
+       that appears in the mark's rings and nowhere else. */
+    --brand: #14602e;
+    --brand-foreground: #ffffff;
+    --brand-hover: #1a7739;
+    --brand-accent: #4cbb5f;
+
+    /* "Distress sale" is a listing flag, not a failure state, so it gets its
+       own token rather than borrowing `warning`. */
+    --distress: #a8481a;
+    --distress-foreground: #ffffff;
+
     /* Neutrals */
     --muted: oklch(0.97 0 0);
     --muted-foreground: oklch(0.556 0 0);
@@ -79,6 +94,17 @@
     --secondary: oklch(0.269 0 0);
     --secondary-foreground: oklch(0.985 0 0);
 
+    /* The forest green is too dark to read on a near-black ground, so dark mode
+       lifts it rather than inverting it. The accent is legible on both and
+       stays put. */
+    --brand: #5cc472;
+    --brand-foreground: #06140b;
+    --brand-hover: #74d287;
+    --brand-accent: #4cbb5f;
+
+    --distress: #e8894f;
+    --distress-foreground: #1a0d05;
+
     --muted: oklch(0.269 0 0);
     --muted-foreground: oklch(0.708 0 0);
     --accent: oklch(0.269 0 0);
@@ -118,9 +144,9 @@
  * `--font-geist-*` are injected by `next/font` in the root layout.
  */
 @theme inline {
-    --font-sans: var(--font-geist-sans);
+    --font-sans: var(--font-public-sans);
     --font-mono: var(--font-geist-mono);
-    --font-heading: var(--font-geist-sans);
+    --font-heading: var(--font-bricolage);
 
     --color-background: var(--background);
     --color-foreground: var(--foreground);
@@ -133,6 +159,14 @@
     --color-primary-foreground: var(--primary-foreground);
     --color-secondary: var(--secondary);
     --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-brand: var(--brand);
+    --color-brand-foreground: var(--brand-foreground);
+    --color-brand-hover: var(--brand-hover);
+    --color-brand-accent: var(--brand-accent);
+
+    --color-distress: var(--distress);
+    --color-distress-foreground: var(--distress-foreground);
 
     --color-muted: var(--muted);
     --color-muted-foreground: var(--muted-foreground);

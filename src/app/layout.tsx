@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Bricolage_Grotesque, Geist_Mono, Public_Sans } from 'next/font/google';
 
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
@@ -9,9 +9,16 @@ import { Providers } from '@/providers';
 import './globals.css';
 
 /* `variable` exposes each font as a CSS custom property, which
-   styles/tokens.css maps onto `--font-sans` / `--font-mono`. */
-const geistSans = Geist({
-    variable: '--font-geist-sans',
+   styles/tokens.css maps onto `--font-sans` / `--font-heading` / `--font-mono`.
+   Both faces are variable fonts, so one request covers the whole weight range. */
+const bricolage = Bricolage_Grotesque({
+    variable: '--font-bricolage',
+    subsets: ['latin'],
+    display: 'swap',
+});
+
+const publicSans = Public_Sans({
+    variable: '--font-public-sans',
     subsets: ['latin'],
     display: 'swap',
 });
@@ -71,7 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                inline script before React hydrates, so the server and client
                markup legitimately differ here. */
             suppressHydrationWarning
-            className={`${geistSans.variable} ${geistMono.variable} h-full`}
+            className={`${publicSans.variable} ${bricolage.variable} ${geistMono.variable} h-full`}
         >
             <body className="flex min-h-full flex-col">
                 <Providers>
