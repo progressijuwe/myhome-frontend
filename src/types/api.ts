@@ -1,3 +1,5 @@
+import type { AccountAction } from './user';
+
 /**
  * Wire formats for the API layer. These describe what the backend sends;
  * adjust them to match your actual contract rather than reshaping responses
@@ -40,4 +42,15 @@ export interface ApiErrorBody {
     message?: string;
     code?: string;
     errors?: Record<string, string[]>;
+
+    /**
+     * Why an otherwise-valid request was refused. The API sends this with a
+     * 403 (unverified email, pending or rejected approval) and a 423 (lockout)
+     * so the client can route to the right screen instead of parsing prose.
+     */
+    action?: AccountAction;
+    /** Sent with `application_rejected`. */
+    rejection_reason?: string | null;
+    /** Sent with `account_locked`. */
+    retry_after_minutes?: number;
 }

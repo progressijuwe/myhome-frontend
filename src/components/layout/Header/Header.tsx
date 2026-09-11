@@ -2,9 +2,8 @@ import Link from 'next/link';
 
 import { Container } from '@/components/shared/Container';
 import { Logo } from '@/components/shared/Logo';
-import { Button } from '@/components/ui/Button';
 import { mainNav } from '@/config/site';
-import { ROUTES } from '@/constants/routes';
+import { AuthNav } from '@/features/auth';
 
 import { MobileNav } from '../MobileNav';
 
@@ -35,20 +34,7 @@ export function Header() {
                     </nav>
 
                     <div className="flex items-center gap-2">
-                        {/* Below `md` these two move into the sheet, so the bar
-                            stays legible on a 375px phone. */}
-                        <Button variant="ghost" size="lg" asChild className="hidden md:inline-flex">
-                            <Link href={ROUTES.login}>Log in</Link>
-                        </Button>
-
-                        <Button
-                            size="lg"
-                            asChild
-                            className="bg-brand text-brand-foreground hover:bg-brand-hover hidden md:inline-flex"
-                        >
-                            <Link href={ROUTES.register}>Create account</Link>
-                        </Button>
-
+                        <AuthNav />
                         <MobileNav />
                     </div>
                 </div>
