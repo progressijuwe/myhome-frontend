@@ -1,0 +1,1 @@
+export { EmailVerifiedResult } from './EmailVerifiedResult';
