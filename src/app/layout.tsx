@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Bricolage_Grotesque, Geist_Mono, Public_Sans } from 'next/font/google';
 
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
@@ -9,9 +9,16 @@ import { Providers } from '@/providers';
 import './globals.css';
 
 /* `variable` exposes each font as a CSS custom property, which
-   styles/tokens.css maps onto `--font-sans` / `--font-mono`. */
-const geistSans = Geist({
-    variable: '--font-geist-sans',
+   styles/tokens.css maps onto `--font-sans` / `--font-heading` / `--font-mono`.
+   Both faces are variable fonts, so one request covers the whole weight range. */
+const bricolage = Bricolage_Grotesque({
+    variable: '--font-bricolage',
+    subsets: ['latin'],
+    display: 'swap',
+});
+
+const publicSans = Public_Sans({
+    variable: '--font-public-sans',
     subsets: ['latin'],
     display: 'swap',
 });
@@ -52,26 +59,23 @@ export const metadata: Metadata = {
         index: true,
         follow: true,
     },
-    icons: { icon: '/favicon.ico' },
+    /* No `icons` entry: app/favicon.ico, app/icon.png and app/apple-icon.png
+       are file conventions, so Next emits the link tags itself. Declaring them
+       here as well would duplicate those tags. */
 };
 
 export const viewport: Viewport = {
-    /* Two entries so the browser chrome matches the active theme. */
-    themeColor: [
-        { media: '(prefers-color-scheme: light)', color: 'white' },
-        { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
-    ],
+    /* One entry: the app is light-only, so the browser chrome should not
+       follow the OS preference. */
+    themeColor: '#ffffff',
+    colorScheme: 'light',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html
             lang="en"
-            /* next-themes writes the theme class onto <html> from a blocking
-               inline script before React hydrates, so the server and client
-               markup legitimately differ here. */
-            suppressHydrationWarning
-            className={`${geistSans.variable} ${geistMono.variable} h-full`}
+            className={`${publicSans.variable} ${bricolage.variable} ${geistMono.variable} h-full`}
         >
             <body className="flex min-h-full flex-col">
                 <Providers>

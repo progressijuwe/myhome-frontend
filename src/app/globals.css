@@ -20,9 +20,13 @@
 @import '../styles/utilities.css';
 
 /**
- * Class-based dark mode, driven by `next-themes` (`attribute="class"` in
- * ThemeProvider). This must stay class-based rather than
- * `prefers-color-scheme` so an explicit user choice can override the OS —
- * "system" is handled by next-themes toggling the class for us.
+ * The app is light-only — there is no theme provider and nothing ever puts
+ * `.dark` on the document.
+ *
+ * This rule still has to stay. Tailwind's built-in `dark:` variant keys off
+ * `prefers-color-scheme`, so deleting this line would let the `dark:` classes
+ * that ship inside the shadcn primitives activate on any machine set to dark
+ * at OS level — half-flipping a design that has no dark palette behind it.
+ * Binding the variant to a class nothing applies keeps them all inert.
  */
 @custom-variant dark (&:is(.dark *));

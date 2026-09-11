@@ -8,24 +8,25 @@ import { env } from './env';
  * places.
  */
 export const siteConfig = {
-    name: 'Next Starter Kit',
+    name: 'Myhome',
+    tagline: 'Find Your Dream Property',
     /* Used verbatim as the default meta description; keep under ~155 chars. */
     description:
-        'A production-ready Next.js starter with typed APIs, a token-driven design system, and accessible components.',
+        'Buy, rent and view property across Lagos. Every listing is reviewed before it goes live, and every agency is verified.',
     url: env.NEXT_PUBLIC_APP_URL,
     ogImage: '/og.png',
-    locale: 'en_US',
-    creator: '@yourhandle',
+    locale: 'en_NG',
+    creator: '@myhome',
     links: {
-        github: 'https://github.com/your-org/next-starter-kit',
-        twitter: 'https://twitter.com/yourhandle',
+        support: '/contact',
     },
 } as const;
 
 export const mainNav: readonly NavItem[] = [
-    { title: 'Features', href: '/#features' },
-    { title: 'Components', href: '/#components' },
-    { title: 'Docs', href: '/#docs' },
+    { title: 'Buy', href: '/properties?listing_type=sale' },
+    { title: 'Rent', href: '/properties?listing_type=rent' },
+    { title: 'Services', href: '/service-providers' },
+    { title: 'How it works', href: '/#how-it-works' },
 ] as const;
 
 export type SiteConfig = typeof siteConfig;

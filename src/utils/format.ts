@@ -26,6 +26,19 @@ export function formatCurrency(amount: number, currency = 'USD', locale = DEFAUL
     return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amount);
 }
 
+/**
+ * "₦145,000,000" — property prices are whole naira, so the minor unit is
+ * dropped. The locale is explicit for the same reason as everything else here:
+ * server and client must agree or hydration mismatches.
+ */
+export function formatNaira(amount: number): string {
+    return new Intl.NumberFormat('en-NG', {
+        style: 'currency',
+        currency: 'NGN',
+        maximumFractionDigits: 0,
+    }).format(amount);
+}
+
 export function formatNumber(
     value: number,
     options?: Intl.NumberFormatOptions,
