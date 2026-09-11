@@ -10,6 +10,10 @@
 
     html {
         @apply font-sans antialiased;
+        /* Light-only app. Without this the browser still paints form controls,
+           scrollbars and autofill in its dark styling for anyone whose OS is
+           set to dark, against a page that has no dark palette. */
+        color-scheme: light;
         scroll-behavior: smooth;
         /* Stop layout shifting sideways when a scrollbar appears or disappears. */
         scrollbar-gutter: stable;

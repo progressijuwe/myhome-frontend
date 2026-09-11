@@ -1,13 +1,13 @@
 /**
  * Design tokens.
  *
- * Colour is declared twice — once per theme — as raw custom properties, then
- * mapped into Tailwind's `--color-*` namespace with `@theme inline`. `inline`
- * matters here: it makes utilities emit `var(--primary)` rather than a resolved
- * value, so one class follows whichever theme is active.
+ * The app is light-only, so there is a single palette. Colour is declared as
+ * raw custom properties, then mapped into Tailwind's `--color-*` namespace with
+ * `@theme inline`; `inline` makes utilities emit `var(--primary)` rather than a
+ * resolved value.
  *
- * Never hardcode a colour in a component. If a shade is missing, add it here in
- * both blocks first.
+ * Never hardcode a colour in a component. If a shade is missing, add it here
+ * first.
  */
 
 :root {
@@ -81,67 +81,9 @@
     --sidebar-ring: oklch(0.708 0 0);
 }
 
-.dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-
-    /* The forest green is too dark to read on a near-black ground, so dark mode
-       lifts it rather than inverting it. The accent is legible on both and
-       stays put. */
-    --brand: #5cc472;
-    --brand-foreground: #06140b;
-    --brand-hover: #74d287;
-    --brand-accent: #4cbb5f;
-
-    --distress: #e8894f;
-    --distress-foreground: #1a0d05;
-
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-
-    --destructive: oklch(0.704 0.191 22.216);
-    --destructive-foreground: oklch(0.985 0 0);
-    --success: oklch(0.7 0.15 149);
-    --success-foreground: oklch(0.145 0 0);
-    --warning: oklch(0.8 0.15 85);
-    --warning-foreground: oklch(0.145 0 0);
-    --info: oklch(0.68 0.13 250);
-    --info-foreground: oklch(0.145 0 0);
-
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
-}
-
 /**
- * Theme-dependent tokens, resolved at use-site so they track light/dark.
- * `--font-geist-*` are injected by `next/font` in the root layout.
+ * Tokens resolved at use-site. The font variables are injected by `next/font`
+ * in the root layout.
  */
 @theme inline {
     --font-sans: var(--font-public-sans);

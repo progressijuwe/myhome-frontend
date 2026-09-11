@@ -7,10 +7,9 @@ import { mainNav } from '@/config/site';
 import { ROUTES } from '@/constants/routes';
 
 import { MobileNav } from '../MobileNav';
-import { ThemeToggle } from '../ThemeToggle';
 
 /**
- * Site header. A Server Component — only ThemeToggle crosses into the client,
+ * Site header. A Server Component — only MobileNav crosses into the client,
  * so the nav markup ships as HTML with no JavaScript cost.
  */
 export function Header() {
@@ -36,8 +35,6 @@ export function Header() {
                     </nav>
 
                     <div className="flex items-center gap-2">
-                        <ThemeToggle />
-
                         {/* Below `md` these two move into the sheet, so the bar
                             stays legible on a 375px phone. */}
                         <Button variant="ghost" size="lg" asChild className="hidden md:inline-flex">

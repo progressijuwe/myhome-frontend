@@ -59,25 +59,22 @@ export const metadata: Metadata = {
         index: true,
         follow: true,
     },
-    icons: { icon: '/favicon.ico' },
+    /* No `icons` entry: app/favicon.ico, app/icon.png and app/apple-icon.png
+       are file conventions, so Next emits the link tags itself. Declaring them
+       here as well would duplicate those tags. */
 };
 
 export const viewport: Viewport = {
-    /* Two entries so the browser chrome matches the active theme. */
-    themeColor: [
-        { media: '(prefers-color-scheme: light)', color: 'white' },
-        { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
-    ],
+    /* One entry: the app is light-only, so the browser chrome should not
+       follow the OS preference. */
+    themeColor: '#ffffff',
+    colorScheme: 'light',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html
             lang="en"
-            /* next-themes writes the theme class onto <html> from a blocking
-               inline script before React hydrates, so the server and client
-               markup legitimately differ here. */
-            suppressHydrationWarning
             className={`${publicSans.variable} ${bricolage.variable} ${geistMono.variable} h-full`}
         >
             <body className="flex min-h-full flex-col">
