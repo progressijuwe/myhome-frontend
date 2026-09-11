@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Bricolage_Grotesque, Geist_Mono, Public_Sans } from 'next/font/google';
 
+import { ChromeGate } from '@/components/layout/ChromeGate';
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { siteConfig } from '@/config/site';
@@ -88,7 +89,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         Skip to content
                     </a>
 
-                    <Header />
+                    {/* Auth screens render their own chrome, so the gate drops
+                        these two there. Header and Footer stay Server
+                        Components — they are passed through as children. */}
+                    <ChromeGate>
+                        <Header />
+                    </ChromeGate>
 
                     {/* tabIndex={-1} makes the skip link's target focusable, so
                         focus actually moves here rather than just scrolling. */}
@@ -96,7 +102,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         {children}
                     </main>
 
-                    <Footer />
+                    <ChromeGate>
+                        <Footer />
+                    </ChromeGate>
                 </Providers>
             </body>
         </html>

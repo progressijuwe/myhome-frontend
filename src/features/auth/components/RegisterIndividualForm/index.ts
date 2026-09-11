@@ -1,0 +1,1 @@
+export { RegisterIndividualForm } from './RegisterIndividualForm';

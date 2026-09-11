@@ -23,6 +23,9 @@ export const ROUTES = {
     registerProvider: '/register/service-provider',
     forgotPassword: '/forgot-password',
     resetPassword: '/reset-password',
+    /* Post-registration notice, and where an unverified user is sent to ask
+       for another link. */
+    verifyEmail: '/verify-email',
     /* The API redirects here after a verification link is followed; the page
        reads ?status=verified|pending-approval|already-verified|invalid|expired. */
     emailVerified: '/email-verified',
@@ -36,3 +39,23 @@ export const ROUTES = {
     notifications: '/notifications',
     settings: '/settings',
 } as const;
+
+/**
+ * Routes that render their own minimal chrome (just the logo) instead of the
+ * site header and footer. Matched by prefix, so `/register/individual` is
+ * covered by `/register`.
+ */
+export const AUTH_ROUTE_PREFIXES = [
+    ROUTES.login,
+    ROUTES.register,
+    ROUTES.forgotPassword,
+    ROUTES.resetPassword,
+    ROUTES.verifyEmail,
+    ROUTES.emailVerified,
+] as const;
+
+export function isAuthRoute(pathname: string): boolean {
+    return AUTH_ROUTE_PREFIXES.some(
+        (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+    );
+}
