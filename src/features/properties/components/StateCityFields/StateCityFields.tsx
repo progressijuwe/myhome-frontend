@@ -16,18 +16,6 @@ export interface StateCityFieldsProps {
 }
 
 /**
- * The paired state and town selects.
- *
- * The only client component in the filter panel, and the reason is the pairing:
- * choosing Kano has to narrow the towns to Kano's before the form is submitted,
- * or the user can hand the API a combination that cannot exist. Everything else
- * on the panel stays a plain server-rendered control.
- *
- * Both keep their `name`, so the surrounding GET form submits them exactly as
- * it did when they were static selects — without JavaScript you get the full
- * town list rather than a broken control.
- */
-/**
  * "Ibadan, Oyo (2)" when the list spans the country, "Ibadan (2)" once a state
  * is chosen — and never "Lagos, Lagos", since a town that shares its state's
  * name gains nothing from the suffix.
@@ -41,6 +29,18 @@ function optionLabel(option: CityOption, withState: boolean): string {
         : `${option.city} (${option.total})`;
 }
 
+/**
+ * The paired state and town selects.
+ *
+ * The only client component in the filter panel, and the reason is the pairing:
+ * choosing Kano has to narrow the towns to Kano's before the form is submitted,
+ * or the user can hand the API a combination that cannot exist. Everything else
+ * on the panel stays a plain server-rendered control.
+ *
+ * Both keep their `name`, so the surrounding GET form submits them exactly as
+ * it did when they were static selects — without JavaScript you get the full
+ * town list rather than a broken control.
+ */
 export function StateCityFields({
     cities,
     state: initialState,

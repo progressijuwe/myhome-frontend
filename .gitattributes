@@ -1,0 +1,16 @@
+# Normalise line endings to LF everywhere, including Windows checkouts.
+#
+# Prettier writes LF (its `endOfLine` default), and CI runs `format:check` on
+# Linux. Without this, a Windows clone can end up with CRLF working copies that
+# fail the check locally while passing on CI — a confusing split that costs more
+# time than it sounds like it should.
+* text=auto eol=lf
+
+# Binary assets must never be touched.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary

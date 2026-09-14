@@ -12,9 +12,8 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The home page is a living
-style guide showing every token and component; toggle the theme in the header to
-check both palettes.
+Open [http://localhost:3000](http://localhost:3000). `/style-guide` is a living
+page showing every token and component.
 
 ## Scripts
 
@@ -28,6 +27,56 @@ check both palettes.
 | `npm run typecheck`    | `tsc --noEmit`             |
 | `npm run format`       | Prettier write             |
 | `npm run format:check` | Prettier check (for CI)    |
+
+## Continuous integration and deployment
+
+`.github/workflows/ci.yml` runs on every push and pull request to `main` and
+`develop`:
+
+| Job                 | Does                                                        |
+| ------------------- | ----------------------------------------------------------- |
+| `quality`           | `format:check`, `lint`, `typecheck` — all three always run  |
+| `build`             | `next build` on Node 20 and 22, with `.next/cache` restored |
+| `security`          | `npm audit`, failing only on high and critical              |
+| `deploy-preview`    | Vercel preview for a pull request, once the checks pass     |
+| `deploy-production` | Vercel production on `main`, once the checks pass           |
+
+The deploy jobs `needs` the three check jobs, which is what makes "tests first"
+a guarantee rather than a race — and the reason deployment lives in this
+workflow instead of one of its own.
+
+### Secrets the deploy jobs need
+
+Add these under **Settings → Secrets and variables → Actions**:
+
+| Secret              | Where to find it                   |
+| ------------------- | ---------------------------------- |
+| `VERCEL_TOKEN`      | Vercel → Account Settings → Tokens |
+| `VERCEL_ORG_ID`     | `.vercel/project.json` (see below) |
+| `VERCEL_PROJECT_ID` | Same file                          |
+
+To produce that file, link the repo to a Vercel project. There is no need to
+install the CLI — `npx` fetches it, and the workflow installs its own copy:
+
+```bash
+npx vercel login
+npx vercel link
+cat .vercel/project.json
+```
+
+Both commands are interactive and open a browser. `.vercel/` is gitignored.
+
+If you would rather not use the CLI at all, both ids are in the dashboard:
+**Project Settings → General** for the project id, and your account or team
+settings for the org id.
+
+`NEXT_PUBLIC_APP_URL` and `NEXT_PUBLIC_API_URL` are **not** set in the workflow
+for deploys — `vercel pull` takes them from the Vercel project, so production
+and preview can point at different APIs. The placeholders in the `build` job are
+scoped to that job for exactly this reason.
+
+Until the secrets exist the two deploy jobs will fail; the three check jobs run
+regardless.
 
 ## Stack
 
