@@ -20,16 +20,22 @@ page showing every token and component.
 
 ## Scripts
 
-| Script                 | Does                       |
-| ---------------------- | -------------------------- |
-| `npm run dev`          | Dev server (Turbopack)     |
-| `npm run build`        | Production build           |
-| `npm start`            | Serve the production build |
-| `npm run lint`         | ESLint                     |
-| `npm run lint:fix`     | ESLint with `--fix`        |
-| `npm run typecheck`    | `tsc --noEmit`             |
-| `npm run format`       | Prettier write             |
-| `npm run format:check` | Prettier check (for CI)    |
+| Script                 | Does                           |
+| ---------------------- | ------------------------------ |
+| `npm run dev`          | Dev server (Turbopack)         |
+| `npm run build`        | Production build               |
+| `npm start`            | Serve the production build     |
+| `npm run lint`         | ESLint                         |
+| `npm run lint:fix`     | ESLint with `--fix`            |
+| `npm run typecheck`    | `next typegen && tsc --noEmit` |
+| `npm run format`       | Prettier write                 |
+| `npm run format:check` | Prettier check (for CI)        |
+
+> `typecheck` runs `next typegen` first. That step writes `next-env.d.ts`,
+> which is what declares the `*.png` / `*.jpg` modules image imports rely on.
+> The file is gitignored on Next's own recommendation, so without typegen a
+> fresh checkout fails every image import with TS2307 — which is exactly what
+> CI does, since it type-checks without building first.
 
 ## Continuous integration and deployment
 
