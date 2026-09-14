@@ -57,8 +57,12 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                # 20.9 is Next 16's floor; 22 is what we develop against.
-                node: ['20', '22']
+                # Next 16 itself runs on 20.9+, but this project's floor is
+                # higher and set by its own toolchain: lint-staged 17 requires
+                # 22.22.1, and the lockfile is written by npm 11, which ships
+                # with Node 22+. Node 20's npm 10.8 cannot install it — it
+                # rejects the optional wasm32 entries as out of sync.
+                node: ['22', '24']
 
         steps:
             - uses: actions/checkout@v4

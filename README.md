@@ -6,6 +6,9 @@ design system are already decided.
 
 ## Getting started
 
+Requires **Node 22.22.1 or newer** (`lint-staged` sets that floor, and the
+lockfile is written by the npm that ships with Node 22+).
+
 ```bash
 npm install
 cp .env.example .env.local
@@ -36,7 +39,7 @@ page showing every token and component.
 | Job                 | Does                                                        |
 | ------------------- | ----------------------------------------------------------- |
 | `quality`           | `format:check`, `lint`, `typecheck` — all three always run  |
-| `build`             | `next build` on Node 20 and 22, with `.next/cache` restored |
+| `build`             | `next build` on Node 22 and 24, with `.next/cache` restored |
 | `security`          | `npm audit`, failing only on high and critical              |
 | `deploy-preview`    | Vercel preview for a pull request, once the checks pass     |
 | `deploy-production` | Vercel production on `main`, once the checks pass           |
