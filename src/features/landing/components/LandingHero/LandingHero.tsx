@@ -18,19 +18,6 @@ const FACTS = [
     { value: 1_150, label: 'Tours booked this month' },
 ];
 
-/**
- * The opening band.
- *
- * The photograph runs the full height of the section and dissolves into the
- * page on its left edge, so the headline sits on clean background with no seam
- * between the two. That dissolve is a *mask* — an alpha ramp, not a colour
- * gradient — which is why it works on white and on the dark theme's near-black
- * without either being painted in.
- *
- * The search is an ordinary GET form pointed at /properties, so it produces a
- * shareable URL and works before any JavaScript loads — no client component
- * needed for the whole section.
- */
 export function LandingHero() {
     return (
         <Section spacing="2xl" className="relative overflow-hidden">
@@ -47,7 +34,7 @@ export function LandingHero() {
                     priority
                     sizes="56vw"
                     placeholder="blur"
-                    className="[mask-image:linear-gradient(to_right,transparent_0%,black_38%,black_100%)] object-cover"
+                    className="mask-[linear-gradient(to_right,transparent_0%,black_38%,black_100%)] object-cover"
                 />
             </div>
 
@@ -75,9 +62,13 @@ export function LandingHero() {
                             />
                             <input
                                 type="search"
-                                name="q"
+                                /* The browse page filters on `location`; `q`
+                                   belongs to the unified search endpoint and
+                                   means nothing to the property feed. */
+                                name="location"
+                                maxLength={80}
                                 aria-label="Area or landmark"
-                                placeholder="Lekki, Ikeja GRA, Yaba…"
+                                placeholder="Lekki, Maitama, GRA Enugu…"
                                 className="text-small placeholder:text-muted-foreground h-11 w-full min-w-0 bg-transparent outline-none"
                             />
                         </div>
@@ -131,7 +122,7 @@ export function LandingHero() {
                         fill
                         sizes="100vw"
                         placeholder="blur"
-                        className="[mask-image:linear-gradient(to_bottom,transparent_0%,black_22%,black_100%)] object-cover"
+                        className="mask-[linear-gradient(to_bottom,transparent_0%,black_22%,black_100%)] object-cover"
                     />
                 </div>
 

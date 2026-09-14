@@ -12,20 +12,12 @@ import { registerIndividualSchema, type RegisterIndividualInput } from '@/valida
 import { AccountFields } from '../AccountFields';
 import { useRegisterMutation } from '../../hooks';
 
-const FIELDS = [
-    'first_name',
-    'last_name',
-    'email',
-    'phone',
-    'password',
-    'password_confirmation',
-] as const;
+const FIELDS = ['first_name', 'last_name', 'email', 'password', 'password_confirmation'] as const;
 
 const DEFAULTS: RegisterIndividualInput = {
     first_name: '',
     last_name: '',
     email: '',
-    phone: '',
     password: '',
     password_confirmation: '',
 };

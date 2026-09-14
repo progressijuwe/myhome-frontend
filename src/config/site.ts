@@ -12,7 +12,7 @@ export const siteConfig = {
     tagline: 'Find Your Dream Property',
     /* Used verbatim as the default meta description; keep under ~155 chars. */
     description:
-        'Buy, rent and view property across Lagos. Every listing is reviewed before it goes live, and every agency is verified.',
+        'Buy, rent and view property across Nigeria. Every listing is reviewed before it goes live, and every agency is verified.',
     url: env.NEXT_PUBLIC_APP_URL,
     ogImage: '/og.png',
     locale: 'en_NG',

@@ -26,7 +26,7 @@ export function ReviewPromise() {
             <Container>
                 <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
                     <div>
-                        <p className="text-caption text-brand font-bold tracking-[0.1em] uppercase">
+                        <p className="text-caption text-brand font-bold tracking-widest uppercase">
                             Why it is quieter here
                         </p>
 

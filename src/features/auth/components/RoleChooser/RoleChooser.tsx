@@ -1,4 +1,4 @@
-import { Building2Icon, HouseIcon, WrenchIcon, type LucideIcon } from 'lucide-react';
+import { Building2Icon, HouseIcon, KeyRoundIcon, WrenchIcon, type LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import { ROUTES } from '@/constants/routes';
@@ -21,6 +21,13 @@ const OPTIONS: readonly RoleOption[] = [
         reviewed: false,
     },
     {
+        href: ROUTES.registerPropertyOwner,
+        title: 'I have a property to let or sell',
+        description: 'For your own flat, house or land — no agency or CAC number needed.',
+        Icon: KeyRoundIcon,
+        reviewed: true,
+    },
+    {
         href: ROUTES.registerCompany,
         title: 'I’m an estate agency',
         description: 'List properties and manage viewing requests in one inbox.',
@@ -29,15 +36,15 @@ const OPTIONS: readonly RoleOption[] = [
     },
     {
         href: ROUTES.registerProvider,
-        title: 'I offer a service',
-        description: 'Publish what you do, where you cover, and what it costs.',
+        title: 'I work a trade',
+        description: 'Take jobs from people who need your trade, any time of year.',
         Icon: WrenchIcon,
         reviewed: true,
     },
 ];
 
 /**
- * Registration splits into three different endpoints with different fields, so
+ * Registration splits into four different endpoints with different fields, so
  * the role is chosen before the form rather than as a field inside it.
  */
 export function RoleChooser() {

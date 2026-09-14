@@ -13,16 +13,40 @@ export interface ApiResponse<T> {
     success?: boolean;
 }
 
+/**
+ * Laravel's pagination block, verbatim.
+ *
+ * Deliberately snake_case and shaped like the framework's output — an earlier
+ * camelCase guess (`page`, `perPage`, `totalPages`) matched nothing the API
+ * sends, so every field read as undefined.
+ */
 export interface PaginationMeta {
-    page: number;
-    perPage: number;
+    current_page: number;
+    last_page: number;
+    per_page: number;
     total: number;
-    totalPages: number;
+    /** Null on an empty page. */
+    from: number | null;
+    to: number | null;
+    path: string;
 }
 
-export interface PaginatedResponse<T> {
+/**
+ * A paginated resource collection: `{ data, links, meta }`.
+ *
+ * These must be read through `apiClient` rather than the `api` helpers — the
+ * helpers unwrap a top-level `data` key, which would discard `meta` and leave
+ * the caller unable to page.
+ */
+export interface Paginated<T> {
     data: T[];
     meta: PaginationMeta;
+    links: {
+        first: string | null;
+        last: string | null;
+        prev: string | null;
+        next: string | null;
+    };
 }
 
 /** Query params accepted by list endpoints. */

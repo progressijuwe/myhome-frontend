@@ -38,7 +38,6 @@ const accountFields = {
     first_name: z.string().trim().min(1, 'Enter your first name').max(100),
     last_name: z.string().trim().min(1, 'Enter your last name').max(100),
     email: z.email('Enter a valid email address').max(255),
-    phone: z.string().trim().max(20, 'Use at most 20 characters').optional(),
     password: passwordSchema,
     password_confirmation: z.string().min(1, 'Confirm your password'),
 };
@@ -54,6 +53,14 @@ const matchError = {
 };
 
 export const registerIndividualSchema = z.object(accountFields).refine(passwordsMatch, matchError);
+
+/**
+ * A private landlord or seller. No company name and no CAC number — that is
+ * the whole point of the role — so it collects nothing beyond the account.
+ */
+export const registerPropertyOwnerSchema = z
+    .object(accountFields)
+    .refine(passwordsMatch, matchError);
 
 export const registerServiceProviderSchema = z
     .object({
@@ -101,6 +108,7 @@ export const resendVerificationSchema = z.object({
 
 export type LoginInput = z.infer<typeof loginSchema>;
 export type RegisterIndividualInput = z.infer<typeof registerIndividualSchema>;
+export type RegisterPropertyOwnerInput = z.infer<typeof registerPropertyOwnerSchema>;
 export type RegisterServiceProviderInput = z.infer<typeof registerServiceProviderSchema>;
 export type RegisterRealEstateCompanyInput = z.infer<typeof registerRealEstateCompanySchema>;
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;

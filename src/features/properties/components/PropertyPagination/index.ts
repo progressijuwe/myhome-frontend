@@ -1,0 +1,1 @@
+export { PropertyPagination } from './PropertyPagination';
