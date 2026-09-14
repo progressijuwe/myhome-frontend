@@ -141,6 +141,16 @@ jobs:
 
                   if [ -z "$missing" ]; then
                       echo "configured=true" >> "$GITHUB_OUTPUT"
+                      {
+                          echo "### Deployment configured"
+                          echo ""
+                          echo "All three Vercel secrets are present."
+                          echo ""
+                          echo "If a deploy job still shows as skipped, it is the event:"
+                          echo "previews run only on a pull request, production only on a"
+                          echo "push to \`main\`. A skipped job with every check green and"
+                          echo "this message showing is working as intended."
+                      } >> "$GITHUB_STEP_SUMMARY"
                       exit 0
                   fi
 
@@ -150,8 +160,10 @@ jobs:
                       echo ""
                       echo "Missing repository secrets:$missing"
                       echo ""
-                      echo "Add them under **Settings → Secrets and variables → Actions**."
-                      echo "See the README for where each value comes from."
+                      echo "They must be **repository** secrets on the **Secrets** tab:"
+                      echo "Settings → Secrets and variables → Actions. Environment"
+                      echo "secrets are invisible to this job, and Variables are a"
+                      echo "different context entirely."
                   } >> "$GITHUB_STEP_SUMMARY"
 
     deploy-preview:
