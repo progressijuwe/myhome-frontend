@@ -73,19 +73,35 @@ Add these under **Settings → Secrets and variables → Actions**:
 | Secret              | Where to find it                   |
 | ------------------- | ---------------------------------- |
 | `VERCEL_TOKEN`      | Vercel → Account Settings → Tokens |
-| `VERCEL_ORG_ID`     | `.vercel/project.json` (see below) |
+| `VERCEL_ORG_ID`     | The link file (see below)          |
 | `VERCEL_PROJECT_ID` | Same file                          |
 
-To produce that file, link the repo to a Vercel project. There is no need to
+To produce the link file, link the repo to a Vercel project. There is no need to
 install the CLI — `npx` fetches it, and the workflow installs its own copy:
 
 ```bash
 npx vercel login
 npx vercel link
-cat .vercel/project.json
 ```
 
 Both commands are interactive and open a browser. `.vercel/` is gitignored.
+
+Which file you get depends on how you linked, and the two have different shapes:
+
+| File                   | Created by           | `VERCEL_ORG_ID`     | `VERCEL_PROJECT_ID` |
+| ---------------------- | -------------------- | ------------------- | ------------------- |
+| `.vercel/project.json` | `vercel link`        | `orgId`             | `projectId`         |
+| `.vercel/repo.json`    | `vercel link --repo` | `projects[0].orgId` | `projects[0].id`    |
+
+This prints the right pair either way:
+
+```bash
+node -e "const f=require('fs');const r='.vercel/repo.json',p='.vercel/project.json';const d=JSON.parse(f.readFileSync(f.existsSync(r)?r:p,'utf8'));const x=d.projects?d.projects[0]:d;console.log('VERCEL_ORG_ID    ',x.orgId);console.log('VERCEL_PROJECT_ID',x.projectId||x.id)"
+```
+
+CI never reads these files — it is a fresh checkout and `.vercel/` is
+gitignored. The CLI takes the ids from the environment variables instead, which
+is why the workflow sets all three.
 
 If you would rather not use the CLI at all, both ids are in the dashboard:
 **Project Settings → General** for the project id, and your account or team
@@ -96,8 +112,10 @@ for deploys — `vercel pull` takes them from the Vercel project, so production
 and preview can point at different APIs. The placeholders in the `build` job are
 scoped to that job for exactly this reason.
 
-Until the secrets exist the two deploy jobs will fail; the three check jobs run
-regardless.
+Until all three exist the deploy jobs **skip** rather than fail — a
+`deploy-config` job checks for them first and writes what is missing to the run
+summary. An unconfigured repo therefore gets a green pipeline, not a permanent
+red X that people learn to ignore. The three check jobs run either way.
 
 ## Stack
 

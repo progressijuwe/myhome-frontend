@@ -113,22 +113,66 @@ jobs:
               run: npm audit --audit-level=high
 
     # ---- CD -------------------------------------------------------------
-    # Both jobs need the full check suite to pass first: `needs` is what makes
-    # that a guarantee rather than a race, which is why deployment lives in this
-    # workflow rather than one of its own.
+    # The deploy jobs need the full check suite to pass first: `needs` is what
+    # makes that a guarantee rather than a race, which is why deployment lives
+    # in this workflow rather than one of its own.
+
+    deploy-config:
+        name: Check deploy configuration
+        runs-on: ubuntu-latest
+        outputs:
+            configured: ${{ steps.check.outputs.configured }}
+        steps:
+            # `secrets` cannot be read from a job-level `if`, so the answer is
+            # computed here and passed down as an output. Without this the
+            # deploy jobs fail on an empty --token, which reads as a broken
+            # pipeline rather than one that was simply never configured.
+            - name: Check for Vercel secrets
+              id: check
+              env:
+                  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+                  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+                  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+              run: |
+                  missing=""
+                  [ -n "$VERCEL_TOKEN" ] || missing="$missing VERCEL_TOKEN"
+                  [ -n "$VERCEL_ORG_ID" ] || missing="$missing VERCEL_ORG_ID"
+                  [ -n "$VERCEL_PROJECT_ID" ] || missing="$missing VERCEL_PROJECT_ID"
+
+                  if [ -z "$missing" ]; then
+                      echo "configured=true" >> "$GITHUB_OUTPUT"
+                      exit 0
+                  fi
+
+                  echo "configured=false" >> "$GITHUB_OUTPUT"
+                  {
+                      echo "### Deployment skipped"
+                      echo ""
+                      echo "Missing repository secrets:$missing"
+                      echo ""
+                      echo "Add them under **Settings → Secrets and variables → Actions**."
+                      echo "See the README for where each value comes from."
+                  } >> "$GITHUB_STEP_SUMMARY"
 
     deploy-preview:
         name: Deploy preview
         runs-on: ubuntu-latest
-        needs: [quality, build, security]
+        needs: [quality, build, security, deploy-config]
         # A pull request from a fork has no access to secrets, so the deploy
         # would fail on something the contributor cannot fix.
         if: >-
+            needs.deploy-config.outputs.configured == 'true' &&
             github.event_name == 'pull_request' &&
             github.event.pull_request.head.repo.full_name == github.repository
         environment:
             name: preview
             url: ${{ steps.deploy.outputs.url }}
+        env:
+            # The CLI reads the project it should act on from these two. Passing
+            # only --token leaves it with no linked project and it fails.
+            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+            VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         steps:
             - uses: actions/checkout@v4
 
@@ -144,14 +188,16 @@ jobs:
             # `vercel pull` fetches the project's own environment variables, so
             # NEXT_PUBLIC_* come from Vercel rather than from this file.
             - name: Pull Vercel environment
-              run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+              run: vercel pull --yes --environment=preview --token="$VERCEL_TOKEN"
 
             - name: Build
-              run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+              run: vercel build --token="$VERCEL_TOKEN"
 
             - name: Deploy
               id: deploy
-              run: echo "url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})" >> "$GITHUB_OUTPUT"
+              run: |
+                  url=$(vercel deploy --prebuilt --token="$VERCEL_TOKEN")
+                  echo "url=$url" >> "$GITHUB_OUTPUT"
 
             - name: Summarise
               # A block scalar: the "Preview: " prefix would otherwise parse
@@ -162,11 +208,18 @@ jobs:
     deploy-production:
         name: Deploy production
         runs-on: ubuntu-latest
-        needs: [quality, build, security]
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        needs: [quality, build, security, deploy-config]
+        if: >-
+            needs.deploy-config.outputs.configured == 'true' &&
+            github.event_name == 'push' &&
+            github.ref == 'refs/heads/main'
         environment:
             name: production
             url: ${{ steps.deploy.outputs.url }}
+        env:
+            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+            VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         steps:
             - uses: actions/checkout@v4
 
@@ -180,14 +233,16 @@ jobs:
               run: npm install --global vercel@latest
 
             - name: Pull Vercel environment
-              run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+              run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
 
             - name: Build
-              run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+              run: vercel build --prod --token="$VERCEL_TOKEN"
 
             - name: Deploy
               id: deploy
-              run: echo "url=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})" >> "$GITHUB_OUTPUT"
+              run: |
+                  url=$(vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN")
+                  echo "url=$url" >> "$GITHUB_OUTPUT"
 
             - name: Summarise
               # A block scalar: the "Production: " prefix would otherwise parse
