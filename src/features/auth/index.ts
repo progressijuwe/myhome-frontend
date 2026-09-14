@@ -11,6 +11,7 @@ export { ForgotPasswordForm } from './components/ForgotPasswordForm';
 export { LoginForm } from './components/LoginForm';
 export { RegisterCompanyForm } from './components/RegisterCompanyForm';
 export { RegisterIndividualForm } from './components/RegisterIndividualForm';
+export { RegisterPropertyOwnerForm } from './components/RegisterPropertyOwnerForm';
 export { RegisterServiceProviderForm } from './components/RegisterServiceProviderForm';
 export { RequireAuth } from './components/RequireAuth';
 export { ResendVerificationForm } from './components/ResendVerificationForm';

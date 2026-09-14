@@ -23,7 +23,7 @@ export function ViewingNegotiation() {
             <Container>
                 <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
                     <div>
-                        <p className="text-caption text-brand font-bold tracking-[0.1em] uppercase">
+                        <p className="text-caption text-brand font-bold tracking-widest uppercase">
                             Booking a viewing
                         </p>
 
@@ -57,7 +57,7 @@ export function ViewingNegotiation() {
                                     4-Bedroom Terrace Duplex
                                 </p>
                                 <p className="text-caption text-muted-foreground">
-                                    Lekki Phase 1 · Adeyemi Homes
+                                    Gwarinpa, Abuja · Adeyemi Homes
                                 </p>
                             </div>
                         </div>
@@ -72,7 +72,7 @@ export function ViewingNegotiation() {
                                 <TabsTrigger
                                     key={stage.label}
                                     value={stage.label}
-                                    className="text-caption data-[state=active]:text-brand data-[state=active]:border-b-brand flex-1 rounded-none border-b-2 border-transparent px-2 py-3.5 font-bold tracking-[0.05em] uppercase data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+                                    className="text-caption data-[state=active]:text-brand data-[state=active]:border-b-brand flex-1 rounded-none border-b-2 border-transparent px-2 py-3.5 font-bold tracking-wider uppercase data-[state=active]:bg-transparent data-[state=active]:shadow-none"
                                 >
                                     {stage.label}
                                 </TabsTrigger>

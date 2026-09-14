@@ -20,7 +20,6 @@ const FIELDS = [
     'first_name',
     'last_name',
     'email',
-    'phone',
     'password',
     'password_confirmation',
     'business_name',
@@ -43,7 +42,6 @@ export function RegisterServiceProviderForm() {
             first_name: '',
             last_name: '',
             email: '',
-            phone: '',
             password: '',
             password_confirmation: '',
             business_name: '',
@@ -109,7 +107,7 @@ export function RegisterServiceProviderForm() {
 
             <Input
                 label="Areas you cover"
-                placeholder="Lekki, Ajah, Victoria Island"
+                placeholder="Abuja (FCT), Nasarawa"
                 error={errors.service_coverage_area?.message}
                 {...register('service_coverage_area')}
             />

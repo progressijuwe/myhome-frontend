@@ -5,4 +5,4 @@ export {
     type MessageResponse,
     type RegisterResponse,
 } from './auth';
-export { usersService, type UpdateUserInput } from './users';
+export { propertiesService } from './properties';

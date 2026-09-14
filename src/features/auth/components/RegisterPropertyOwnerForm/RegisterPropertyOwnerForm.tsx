@@ -7,14 +7,14 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/Alert';
 import { Button } from '@/components/ui/Button';
 import { ApiError, getErrorMessage } from '@/lib/api-error';
 import { authService } from '@/services/auth';
-import { registerIndividualSchema, type RegisterIndividualInput } from '@/validators/auth';
+import { registerPropertyOwnerSchema, type RegisterPropertyOwnerInput } from '@/validators/auth';
 
 import { AccountFields } from '../AccountFields';
 import { useRegisterMutation } from '../../hooks';
 
 const FIELDS = ['first_name', 'last_name', 'email', 'password', 'password_confirmation'] as const;
 
-const DEFAULTS: RegisterIndividualInput = {
+const DEFAULTS: RegisterPropertyOwnerInput = {
     first_name: '',
     last_name: '',
     email: '',
@@ -22,21 +22,28 @@ const DEFAULTS: RegisterIndividualInput = {
     password_confirmation: '',
 };
 
-export function RegisterIndividualForm() {
+/**
+ * Registration for a private landlord or seller.
+ *
+ * Deliberately the shortest form of the four: someone letting their own flat
+ * has no company name and no CAC number, and asking for them is what pushes
+ * this kind of user away.
+ */
+export function RegisterPropertyOwnerForm() {
     const {
         register,
         handleSubmit,
         setError,
         formState: { errors, isSubmitting },
-    } = useForm<RegisterIndividualInput>({
-        resolver: zodResolver(registerIndividualSchema),
+    } = useForm<RegisterPropertyOwnerInput>({
+        resolver: zodResolver(registerPropertyOwnerSchema),
         mode: 'onBlur',
         reValidateMode: 'onChange',
         defaultValues: DEFAULTS,
     });
 
-    const mutation = useRegisterMutation<RegisterIndividualInput>({
-        mutationFn: authService.registerIndividual,
+    const mutation = useRegisterMutation<RegisterPropertyOwnerInput>({
+        mutationFn: authService.registerPropertyOwner,
         setError,
         fields: FIELDS,
     });

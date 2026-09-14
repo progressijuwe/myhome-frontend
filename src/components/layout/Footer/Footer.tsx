@@ -55,7 +55,7 @@ export function Footer() {
 
                     {columns.map((column) => (
                         <nav key={column.heading} aria-label={column.heading}>
-                            <h2 className="text-caption text-foreground mb-4 font-bold tracking-[0.1em] uppercase">
+                            <h2 className="text-caption text-foreground mb-4 font-bold tracking-widest uppercase">
                                 {column.heading}
                             </h2>
                             <ul className="flex flex-col gap-2.5">
@@ -79,7 +79,7 @@ export function Footer() {
                         {/* Rendered on the server at build time. If this page is
                             statically generated, the year freezes at build — use
                             a client component if that matters to you. */}
-                        &copy; {new Date().getFullYear()} {siteConfig.name}. Lagos, Nigeria.
+                        &copy; {new Date().getFullYear()} {siteConfig.name}. Nigeria.
                     </Text>
                     <Text size="small" muted>
                         All listings reviewed before publication.

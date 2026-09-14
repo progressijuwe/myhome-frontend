@@ -20,6 +20,7 @@ export const ROUTES = {
     register: '/register',
     registerIndividual: '/register/individual',
     registerCompany: '/register/real-estate-company',
+    registerPropertyOwner: '/register/property-owner',
     registerProvider: '/register/service-provider',
     forgotPassword: '/forgot-password',
     resetPassword: '/reset-password',
