@@ -48,6 +48,18 @@ The deploy jobs `needs` the three check jobs, which is what makes "tests first"
 a guarantee rather than a race — and the reason deployment lives in this
 workflow instead of one of its own.
 
+### Why `@emnapi/core` and `@emnapi/runtime` are devDependencies
+
+They are not imported anywhere. They are transitive dependencies of
+`@tailwindcss/oxide-wasm32-wasi` and `@img/sharp-wasm32` — optional WASM
+fallbacks that npm on Windows never walks into, so their subtree was missing
+from the lockfile. `npm ci` on Linux resolves those packages, finds no entry and
+fails with `Missing: @emnapi/runtime@1.11.3 from lock file`.
+
+Declaring them directly forces top-level lockfile entries that satisfy both
+platforms. Remove them only if you regenerate the lockfile on Linux, which fixes
+the same gap at the source.
+
 ### Secrets the deploy jobs need
 
 Add these under **Settings → Secrets and variables → Actions**:
