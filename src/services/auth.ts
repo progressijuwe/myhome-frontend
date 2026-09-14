@@ -4,6 +4,7 @@ import type {
     ForgotPasswordInput,
     LoginInput,
     RegisterIndividualInput,
+    RegisterPropertyOwnerInput,
     RegisterRealEstateCompanyInput,
     RegisterServiceProviderInput,
     ResetPasswordInput,
@@ -47,6 +48,10 @@ export const authService = {
 
     registerIndividual(input: RegisterIndividualInput): Promise<RegisterResponse> {
         return api.post<RegisterResponse>('/auth/register/individual', input);
+    },
+
+    registerPropertyOwner(input: RegisterPropertyOwnerInput): Promise<RegisterResponse> {
+        return api.post<RegisterResponse>('/auth/register/property-owner', input);
     },
 
     registerServiceProvider(input: RegisterServiceProviderInput): Promise<RegisterResponse> {

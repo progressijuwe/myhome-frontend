@@ -49,16 +49,6 @@ export function AccountFields<T extends FieldValues>({ register, errors }: Accou
             />
 
             <Input
-                label="Phone"
-                type="tel"
-                autoComplete="tel"
-                placeholder="080 1234 5678"
-                description="Optional."
-                error={error.phone?.message}
-                {...field('phone')}
-            />
-
-            <Input
                 label="Password"
                 type="password"
                 autoComplete="new-password"

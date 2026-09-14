@@ -21,7 +21,6 @@ const FIELDS = [
     'first_name',
     'last_name',
     'email',
-    'phone',
     'password',
     'password_confirmation',
     'company_name',
@@ -44,7 +43,6 @@ export function RegisterCompanyForm() {
             first_name: '',
             last_name: '',
             email: '',
-            phone: '',
             password: '',
             password_confirmation: '',
             company_name: '',
@@ -105,7 +103,7 @@ export function RegisterCompanyForm() {
             <Textarea
                 label="Company address"
                 rows={3}
-                placeholder="1 Marina, Lagos Island, Lagos"
+                placeholder="12 Ahmadu Bello Way, Garki, Abuja"
                 error={errors.company_address?.message}
                 {...register('company_address')}
             />

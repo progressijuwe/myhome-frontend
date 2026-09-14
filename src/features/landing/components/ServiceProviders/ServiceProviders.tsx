@@ -16,20 +16,20 @@ export function ServiceProviders() {
             <Container>
                 <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
                     <div>
-                        <p className="text-caption text-brand font-bold tracking-[0.1em] uppercase">
-                            After you move in
+                        <p className="text-caption text-brand font-bold tracking-widest uppercase">
+                            Artisans, whenever you need them
                         </p>
                         <Heading as="h2" id="service-providers" size="h2" className="mt-2">
-                            Tradespeople your neighbours already rated
+                            Good artisans, already vetted and rated
                         </Heading>
                         <Text size="body" muted className="mt-2.5 max-w-[60ch]">
-                            Plumbers, electricians, carpenters and painters — rated only by people
-                            who actually hired them.
+                            Plumbers, electricians, carpenters, painters and more, across Nigeria.
+                            Book one for a leaking tap today or a full refit next year
                         </Text>
                     </div>
 
                     <Button variant="outline" size="lg" asChild rightIcon={<ArrowRightIcon />}>
-                        <Link href={ROUTES.serviceProviders}>See all trades</Link>
+                        <Link href={ROUTES.serviceProviders}>Browse artisans</Link>
                     </Button>
                 </div>
 

@@ -2,13 +2,16 @@
     "name": "next-starter-kit",
     "version": "0.1.0",
     "private": true,
+    "engines": {
+        "node": ">=22.22.1"
+    },
     "scripts": {
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
         "lint": "eslint",
         "lint:fix": "eslint --fix",
-        "typecheck": "tsc --noEmit",
+        "typecheck": "next typegen && tsc --noEmit",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "prepare": "husky"
@@ -31,6 +34,8 @@
         "zod": "^4.4.3"
     },
     "devDependencies": {
+        "@emnapi/core": "^1.11.3",
+        "@emnapi/runtime": "^1.11.3",
         "@tailwindcss/postcss": "^4",
         "@types/node": "^20",
         "@types/react": "^19",

@@ -20,14 +20,14 @@ const PATHS = [
         cta: { label: 'Register your agency', href: ROUTES.registerCompany, primary: true },
     },
     {
-        heading: 'For service providers',
-        body: 'Publish what you do, where you cover and what it costs. Answer enquiries as they arrive.',
+        heading: 'For artisans and tradespeople',
+        body: 'Reach people who need your trade all year round, not just when they move. Publish what you do, where you cover and what it costs.',
         points: [
             'List each service with its own price',
             'Mark yourself unavailable when full',
-            'Build a rating from real customers',
+            'Build a rating from customers who hired you',
         ],
-        cta: { label: 'Register as a provider', href: ROUTES.registerProvider, primary: false },
+        cta: { label: 'Register your trade', href: ROUTES.registerProvider, primary: false },
     },
 ];
 

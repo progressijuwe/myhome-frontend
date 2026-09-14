@@ -1,0 +1,1 @@
+export { PropertyLocation } from './PropertyLocation';
