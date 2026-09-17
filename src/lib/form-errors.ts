@@ -27,10 +27,21 @@ export function applyServerFieldErrors<T extends FieldValues>(
     for (const [field, messages] of Object.entries(error.fieldErrors)) {
         const message = messages?.[0];
 
-        if (message && fields.includes(field)) {
-            setError(field as Path<T>, { type: 'server', message });
-            applied = true;
-        }
+        if (!message) continue;
+
+        /* Laravel keys array members individually — `images.0`, `photos.2` —
+           and the form renders one input for the whole array. Fall back to the
+           parent name so the message lands somewhere visible instead of being
+           dropped, which leaves the reader staring at a form that silently
+           refused to submit. */
+        const target = fields.includes(field)
+            ? field
+            : fields.find((name) => field.startsWith(`${name}.`));
+
+        if (!target) continue;
+
+        setError(target as Path<T>, { type: 'server', message });
+        applied = true;
     }
 
     return applied;

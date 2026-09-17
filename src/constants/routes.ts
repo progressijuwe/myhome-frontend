@@ -33,6 +33,14 @@ export const ROUTES = {
 
     /* Signed in */
     dashboard: '/dashboard',
+    /* Admin review queue — listings and accounts. */
+    admin: '/admin',
+    /* Listing management, for agencies and private owners. */
+    myListings: '/dashboard/listings',
+    newListing: '/dashboard/listings/new',
+    editListing: (id: string | number) => `/dashboard/listings/${id}/edit`,
+    /* Viewing requests coming in on your own listings. */
+    companyBookings: '/dashboard/viewings',
     savedProperties: '/saved',
     following: '/following',
     bookings: '/bookings',

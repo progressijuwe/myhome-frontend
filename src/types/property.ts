@@ -109,6 +109,8 @@ export interface Property {
     /** Ready-made "Open in Maps" link, built by the API. */
     maps_url?: string;
     status: PropertyStatus;
+    /** Why an admin refused it. Returned to the owner only. */
+    rejection_reason?: string | null;
     posted_by: PropertyOwner;
     /** Only present when the relation was eager loaded; empty array otherwise. */
     images?: PropertyImage[];

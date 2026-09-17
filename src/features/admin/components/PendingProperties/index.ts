@@ -1,0 +1,1 @@
+export { PendingProperties } from './PendingProperties';
