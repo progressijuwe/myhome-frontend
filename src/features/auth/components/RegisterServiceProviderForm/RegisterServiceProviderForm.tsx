@@ -1,11 +1,14 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/Alert';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { Select } from '@/components/ui/Select';
+import { NIGERIAN_STATES, STATE_LABELS } from '@/constants/states';
+import { OTHER_TRADE, TRADES, TRADE_LABELS } from '@/constants/trades';
 import { ApiError, getErrorMessage } from '@/lib/api-error';
 import { authService } from '@/services/auth';
 import {
@@ -23,8 +26,10 @@ const FIELDS = [
     'password',
     'password_confirmation',
     'business_name',
-    'trade_specialty',
+    'trade',
+    'trade_other',
     'years_of_experience',
+    'state',
     'service_coverage_area',
 ] as const;
 
@@ -33,6 +38,7 @@ export function RegisterServiceProviderForm() {
         register,
         handleSubmit,
         setError,
+        control,
         formState: { errors, isSubmitting },
     } = useForm<RegisterServiceProviderInput>({
         resolver: zodResolver(registerServiceProviderSchema),
@@ -45,9 +51,15 @@ export function RegisterServiceProviderForm() {
             password: '',
             password_confirmation: '',
             business_name: '',
-            trade_specialty: '',
+            /* Undefined so the placeholder shows and a trade is chosen
+               deliberately rather than defaulting to whatever sorts first. */
+            trade: undefined,
+            trade_other: '',
             /* Empty rather than 0 so the field starts blank; the schema coerces. */
             years_of_experience: undefined as unknown as number,
+            /* Undefined rather than a state, so the placeholder shows and the
+               applicant has to choose one deliberately. */
+            state: undefined,
             service_coverage_area: '',
         },
     });
@@ -57,6 +69,15 @@ export function RegisterServiceProviderForm() {
         setError,
         fields: FIELDS,
     });
+
+    /* Naming the chosen state makes the guidance concrete, which is what
+       stops an artisan in Lagos writing "Lagos" here and losing the whole
+       point of having two fields.
+
+       `useWatch` rather than `watch()`: the latter returns a function the React
+       Compiler cannot memoize, so it bails out of optimising the whole form. */
+    const selectedState = useWatch({ control, name: 'state' });
+    const selectedTrade = useWatch({ control, name: 'trade' });
 
     const onSubmit = handleSubmit((values) => mutation.mutateAsync(values).catch(() => {}));
 
@@ -85,12 +106,21 @@ export function RegisterServiceProviderForm() {
             />
 
             <div className="grid gap-4 sm:grid-cols-2">
-                <Input
+                <Select
                     label="Trade"
-                    placeholder="Plumbing"
-                    error={errors.trade_specialty?.message}
-                    {...register('trade_specialty')}
-                />
+                    defaultValue=""
+                    error={errors.trade?.message}
+                    {...register('trade')}
+                >
+                    <option value="" disabled>
+                        Choose a trade
+                    </option>
+                    {TRADES.map((trade) => (
+                        <option key={trade} value={trade}>
+                            {TRADE_LABELS[trade]}
+                        </option>
+                    ))}
+                </Select>
                 {/* `valueAsNumber` matters: without it the input hands the
                     schema a string and every value fails the number check. */}
                 <Input
@@ -105,9 +135,43 @@ export function RegisterServiceProviderForm() {
                 />
             </div>
 
+            {/* The list is not authoritative, so "Other" keeps the door open
+                for a trade it misses — and those words become the trade a
+                reader sees on the profile. */}
+            {selectedTrade === OTHER_TRADE ? (
+                <Input
+                    label="What trade is it?"
+                    placeholder="Borehole drilling"
+                    maxLength={100}
+                    error={errors.trade_other?.message}
+                    {...register('trade_other')}
+                />
+            ) : null}
+
+            <Select
+                label="State you work in"
+                defaultValue=""
+                error={errors.state?.message}
+                {...register('state')}
+            >
+                <option value="" disabled>
+                    Choose a state
+                </option>
+                {NIGERIAN_STATES.map((state) => (
+                    <option key={state} value={state}>
+                        {STATE_LABELS[state]}
+                    </option>
+                ))}
+            </Select>
+
             <Input
-                label="Areas you cover"
-                placeholder="Abuja (FCT), Nasarawa"
+                label="Towns or areas you cover"
+                placeholder="Lekki, Ajah, Victoria Island"
+                description={
+                    selectedState
+                        ? `Towns or neighbourhoods inside ${STATE_LABELS[selectedState]}, separated by commas. No need to repeat the state.`
+                        : 'Towns or neighbourhoods, separated by commas. Pick your state above first.'
+                }
                 error={errors.service_coverage_area?.message}
                 {...register('service_coverage_area')}
             />
