@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { NIGERIAN_STATES } from '@/constants/states';
+import { OTHER_TRADE, TRADES } from '@/constants/trades';
 
 /**
  * Auth schemas. These are the contract for both the form and the request body —
@@ -66,7 +68,10 @@ export const registerServiceProviderSchema = z
     .object({
         ...accountFields,
         business_name: z.string().trim().min(1, 'Enter your business name').max(200),
-        trade_specialty: z.string().trim().min(1, 'Enter your trade').max(100),
+        trade: z.enum(TRADES, { error: 'Choose the trade you work in' }),
+        /* Only required when they pick "Other" — enforced by the refine
+           below, since a field cannot see its siblings on its own. */
+        trade_other: z.string().trim().max(100).optional(),
         /* A plain number, not `z.coerce`: coercion gives the schema an
            `unknown` input type, which RHF's resolver generics reject. The
            input is registered with `valueAsNumber` instead. */
@@ -75,9 +80,16 @@ export const registerServiceProviderSchema = z
             .int('Enter a whole number')
             .min(0, 'Cannot be negative')
             .max(60, 'Enter 60 or fewer'),
+        /* A closed list, so an unknown value is rejected here rather than
+           travelling to the API to be refused there. */
+        state: z.enum(NIGERIAN_STATES, { error: 'Choose the state you work in' }),
         service_coverage_area: z.string().trim().min(1, 'Enter the areas you cover').max(255),
     })
-    .refine(passwordsMatch, matchError);
+    .refine(passwordsMatch, matchError)
+    .refine((values) => values.trade !== OTHER_TRADE || Boolean(values.trade_other), {
+        error: 'Tell us what trade you work in',
+        path: ['trade_other'],
+    });
 
 export const registerRealEstateCompanySchema = z
     .object({

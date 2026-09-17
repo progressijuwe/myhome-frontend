@@ -1,3 +1,6 @@
+import type { NigerianState } from './property';
+import type { Trade } from './service-provider';
+
 /**
  * The account shape as the API returns it (see UserResource on the backend).
  *
@@ -5,15 +8,24 @@
  * there is no mapping layer to keep in sync when the resource changes.
  */
 
-export type UserRole = 'individual' | 'service_provider' | 'real_estate_company' | 'admin';
+export type UserRole =
+    'individual' | 'property_owner' | 'service_provider' | 'real_estate_company' | 'admin';
 
 /** `not_required` is what individuals and admins get — only the two business roles are reviewed. */
 export type ApprovalStatus = 'not_required' | 'pending' | 'approved' | 'rejected';
 
 export interface ServiceProviderProfile {
     business_name: string;
+    /** Canonical key, matched exactly by the directory filter. */
+    trade: Trade;
+    /** What to show: the label, or their own words when they chose `other`. */
     trade_specialty: string;
     years_of_experience: number;
+    /** One of the 36 states or the FCT. The coarse, exactly-matched filter. */
+    state: NigerianState;
+    /** Display form of `state`, built by the API. */
+    state_label: string;
+    /** Free text detail within the state — "Lekki and Ajah". */
     service_coverage_area: string;
 }
 
