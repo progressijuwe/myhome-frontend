@@ -11,8 +11,10 @@ const MEDIA_PREFIX = '/media';
  * fetching a loopback address, something Next blocks by default as an SSRF
  * risk. Proxying instead keeps every image same-origin.
  *
- * Anything that isn't a recognisable storage URL is returned untouched, so a
- * CDN URL or an already-relative path still works.
+ * Anything that isn't a recognisable storage URL is returned untouched — which
+ * is exactly what happens in production, where the API stores media in a bucket
+ * and returns absolute URLs on it. Those are served straight from the bucket
+ * and allow-listed in next.config.ts rather than proxied.
  */
 export function toMediaUrl(url: string): string {
     if (!url) return url;
